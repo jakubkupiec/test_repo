@@ -1,1 +1,33 @@
+name: Convert YAML to JSON
 
+on:
+  push:
+    paths:
+      - '**/*.yaml'
+      - '.github/scripts/**'
+  workflow_dispatch:
+
+jobs:
+  convert:
+    runs-on: windows-latest  # PowerShell Core works on Windows, macOS, and Ubuntu, but Windows is safest for native PowerShell
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Convert YAML files to JSON
+        shell: pwsh
+        run: |
+          $scriptPath = ".github/scripts/ConvertSentinelRuleFrom-Yaml.ps1"
+
+          # Make sure script exists
+          if (-Not (Test-Path $scriptPath)) {
+            Write-Error "Script not found at $scriptPath"
+            exit 1
+          }
+
+          # Convert each .yaml file in the repo root
+          Get-ChildItem -Path . -Filter "*.yaml" -Recurse | ForEach-Object {
+            Write-Host "Converting $($_.FullName)"
+            & $scriptPath -Path $_.FullName
+          }
