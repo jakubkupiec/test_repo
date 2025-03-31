@@ -31,6 +31,12 @@ jobs:
             & $scriptPath -Path $_.FullName
           }
 
+          # Check if JSON files were created
+          if (-Not (Get-ChildItem -Path . -Filter "*.json" -Recurse)) {
+            Write-Host "No JSON files were created."
+            exit 0
+          }
+
       - name: Commit converted JSON files
         run: |
           git config --global user.name "github-actions[bot]"
