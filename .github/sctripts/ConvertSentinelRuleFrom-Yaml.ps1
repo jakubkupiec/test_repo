@@ -66,7 +66,7 @@ function ConvertSentinelRuleFrom-Yaml {
     # Test if path exists and extract the data from folder or file
 
     if ($Path.Extension -in '.yaml', '.yml') {
-        Write-Verbose "Singel YAML file selected"
+        Write-Verbose "Single YAML file selected"
         try {
             $content = Get-Item -Path $Path -ErrorAction Stop
         }
@@ -139,23 +139,22 @@ function ConvertSentinelRuleFrom-Yaml {
                 $($template.resources).properties.incidentConfiguration.groupingConfiguration.lookbackDuration = ConvertTo-ISO8601 $($template.resources).properties.incidentConfiguration.groupingConfiguration.lookbackDuration
             }
 
-            #Based of output path variable export files to the right folder
+            # Based on output path variable export files to the right folder
             if ($null -ne $expPath) {
                 $outputFile = $expPath + "/" + $($_.BaseName) + ".json"
             }
             else {
-
                 $outputFile = $($_.DirectoryName) + "/" + $($_.BaseName) + ".json"
             }
 
-            #Export to JSON
+            # Export to JSON
             try {
                 $template | ConvertTo-Json -Depth 20 -EscapeHandling EscapeNonAscii | Out-File $outputFile -ErrorAction Stop
             }
             catch {
                 Write-Error $_.Exception.Message
             }
-        }
+        } # Closing brace added here
     }
     else {
         Write-Error "No YAML templates found"
@@ -196,3 +195,4 @@ function ConvertTo-ISO8601 {
             return $value.ToUpper()
         }
     }
+}
