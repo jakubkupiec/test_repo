@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - '**/*.yaml'
-      - '.github/scripts/**'
+      - '.github/sctripts/**'
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
       - name: Convert YAML files to JSON
         shell: pwsh
         run: |
-          $scriptPath = ".github/scripts/ConvertSentinelRuleFrom-Yaml.ps1"
+          $scriptPath = ".github/sctripts/ConvertSentinelRuleFrom-Yaml.ps1"
 
           # Make sure script exists
           if (-Not (Test-Path $scriptPath)) {
