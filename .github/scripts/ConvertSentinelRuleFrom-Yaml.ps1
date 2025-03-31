@@ -154,7 +154,7 @@ function ConvertSentinelRuleFrom-Yaml {
             catch {
                 Write-Error $_.Exception.Message
             }
-        } # Closing brace added here
+        }
     }
     else {
         Write-Error "No YAML templates found"
